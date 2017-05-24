@@ -126,7 +126,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void openMain() {
-        Intent mainActivity = Intent.makeMainActivity(getComponentName());
+        Intent mainActivity = new Intent(this, MainActivity.class);
         startActivity(mainActivity);
+        finish();
     }
 }
