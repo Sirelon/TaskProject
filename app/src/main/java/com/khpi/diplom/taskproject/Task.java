@@ -13,6 +13,8 @@ public class Task {
     private long creationDate;
     private String responsibleUserId;
 
+    private String priority;
+
     public String getId() {
         return id;
     }
@@ -59,5 +61,13 @@ public class Task {
 
     public void setResponsibleUserId(String responsibleUserId) {
         this.responsibleUserId = responsibleUserId;
+    }
+
+    public String getPriority() {
+        return priority;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 }

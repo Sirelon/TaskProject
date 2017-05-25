@@ -29,7 +29,8 @@
             android:id="@+id/field_taskDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Description"/>
+            android:hint="Description"
+            android:lines="5"/>
 
     </android.support.design.widget.TextInputLayout>
 
