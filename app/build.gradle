@@ -5,7 +5,7 @@ android {
         config {
             keyAlias 'taskmanager'
             keyPassword 'qwerty'
-            storeFile file('keystore.keystore')
+            storeFile file('/Users/Sirelon/Documents/Projects/Other/TaskProject/keystore.keystore')
             storePassword 'qwerty'
         }
     }
@@ -44,6 +44,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.google.firebase:firebase-database:10.2.1'
 }
+
 
 
 apply plugin: 'com.google.gms.google-services'

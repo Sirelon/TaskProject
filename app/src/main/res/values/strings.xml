@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">TaskProject</string>
     <string name="action_settings">Settings</string>
+    <string name="priority">Priority</string>
+
+    <string-array name="arr_priority">
+        <item>High</item>
+        <item>Normal</item>
+        <item>Low</item>
+    </string-array>
 </resources>
