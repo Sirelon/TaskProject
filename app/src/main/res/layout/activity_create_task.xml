@@ -47,22 +47,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:padding="8dp"
         android:layout_height="wrap_content">
 
         <TextView
+            style="@style/TextAppearance.AppCompat.Medium.Inverse"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Priority:"/>
+            android:padding="4dp"
+            android:text="Priority:"
+            android:textColor="?android:textColorHint"/>
 
         <Spinner
             android:id="@+id/list_priority"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="right"
-            android:entries="@array/arr_priority"/>
+            android:entries="@array/arr_priority"
+            android:gravity="right"/>
     </LinearLayout>
 
     <LinearLayout
