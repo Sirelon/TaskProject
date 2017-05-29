@@ -1,5 +1,6 @@
 package com.khpi.diplom.taskproject;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText emailField;
     private EditText passwordField;
     private TextInputLayout userNameInput;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,15 +75,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void onSignUpClick(String email, String password) {
-        String username = userNameInput.getEditText().getText().toString();
-        if (TextUtils.isEmpty(username)) {
-            // Show user name field
-            userNameInput.setVisibility(View.VISIBLE);
-            userNameInput.requestFocus();
-            Toast.makeText(this, "Please type your name", Toast.LENGTH_SHORT).show();
-        } else {
-            signUp(email, password, username);
+    private void showProgress(){
+        if (progressDialog == null){
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("Please wait");
+            progressDialog.setCancelable(false);
+        }
+        progressDialog.show();
+    }
+
+    private void hideProgress(){
+        if (progressDialog != null && progressDialog.isShowing()){
+            progressDialog.hide();
         }
     }
 
@@ -102,6 +107,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void logIn(String email, String password) {
+        showProgress();
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -123,7 +129,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
+    private void onSignUpClick(String email, String password) {
+        String username = userNameInput.getEditText().getText().toString();
+        if (TextUtils.isEmpty(username)) {
+            // Show user name field
+            userNameInput.setVisibility(View.VISIBLE);
+            userNameInput.requestFocus();
+            Toast.makeText(this, "Please type your name", Toast.LENGTH_SHORT).show();
+        } else {
+            signUp(email, password, username);
+        }
+    }
+
     private void signUp(String email, String password, final String username) {
+        showProgress();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -168,6 +187,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void openMain() {
+        hideProgress();
         Intent mainActivity = new Intent(this, MainActivity.class);
         startActivity(mainActivity);
         finish();
