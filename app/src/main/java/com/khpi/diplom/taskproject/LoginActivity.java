@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -24,6 +27,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FirebaseAuth mAuth;
     private EditText emailField;
     private EditText passwordField;
+    private TextInputLayout userNameInput;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,6 +39,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         emailField = (EditText) findViewById(R.id.field_email);
         passwordField = (EditText) findViewById(R.id.field_password);
+        userNameInput = (TextInputLayout) findViewById(R.id.field_username);
+        userNameInput.setVisibility(View.GONE);
 
         findViewById(R.id.btn_login).setOnClickListener(this);
 
@@ -61,9 +67,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             break;
             case R.id.btn_signup: {
-                signUp(email, password);
+                onSignUpClick(email, password);
             }
             break;
+        }
+    }
+
+    private void onSignUpClick(String email, String password) {
+        String username = userNameInput.getEditText().getText().toString();
+        if (TextUtils.isEmpty(username)) {
+            // Show user name field
+            userNameInput.setVisibility(View.VISIBLE);
+            userNameInput.requestFocus();
+            Toast.makeText(this, "Please type your name", Toast.LENGTH_SHORT).show();
+        } else {
+            signUp(email, password, username);
         }
     }
 
@@ -105,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 });
     }
 
-    private void signUp(String email, String password) {
+    private void signUp(String email, String password, final String username) {
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -114,15 +132,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (task.isSuccessful()) {
+                            FirebaseUser firebaseUser = task.getResult().getUser();
+                            saveUser(firebaseUser, username);
+                        } else {
+                            Log.w(TAG, "createUserWithEmailAndPassword:failed", task.getException());
+
+                            errorDuringSignUp();
+                        }
+                    }
+                });
+    }
+
+    private void saveUser(FirebaseUser firebaseUser, String username) {
+        User user = new User(firebaseUser.getUid(), username, firebaseUser.getEmail());
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference reference = firebaseDatabase.getReference().child("users").child(user.getUid());
+        reference.setValue(user)
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
                             openMain();
                         } else {
                             Log.w(TAG, "createUserWithEmailAndPassword:failed", task.getException());
 
-                            Toast.makeText(LoginActivity.this, "Incorrect login or password.",
-                                    Toast.LENGTH_SHORT).show();
+                            errorDuringSignUp();
                         }
                     }
                 });
+    }
+
+    private void errorDuringSignUp() {
+        Toast.makeText(LoginActivity.this, "Incorrect login or password.",
+                Toast.LENGTH_SHORT).show();
     }
 
     private void openMain() {

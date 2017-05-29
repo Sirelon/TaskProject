@@ -90,7 +90,7 @@ public class CreateTaskActivity extends AppCompatActivity {
     private static boolean checkForValid(String descriptionStr, TextInputLayout inputLayout) {
         if (TextUtils.isEmpty(descriptionStr)) {
             inputLayout.setError("Cannot be blank.");
-            inputLayout.setFocusable(true);
+            inputLayout.requestFocus();
             return false;
         } else {
             inputLayout.setError(null);
