@@ -2,9 +2,11 @@ package com.khpi.diplom.taskproject;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,9 +21,9 @@ import java.util.UUID;
 
 public class CreateTaskActivity extends AppCompatActivity {
 
-    private EditText description;
-    private EditText name;
-    private EditText taskUser;
+    private TextInputLayout nameInput;
+    private TextInputLayout descriptionInput;
+    private TextInputLayout taskUserInput;
     private Spinner prioritySpinner;
     private String[] priorityArray;
 
@@ -30,9 +32,11 @@ public class CreateTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_task);
 
-        name = (EditText) findViewById(R.id.field_taskName);
-        description = (EditText) findViewById(R.id.field_taskDescription);
-        taskUser = (EditText) findViewById(R.id.field_taskUser);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        nameInput = (TextInputLayout) findViewById(R.id.field_taskName);
+        descriptionInput = (TextInputLayout) findViewById(R.id.field_taskDescription);
+        taskUserInput = (TextInputLayout) findViewById(R.id.field_taskUser);
 
         prioritySpinner = (Spinner) findViewById(R.id.list_priority);
 
@@ -53,18 +57,45 @@ public class CreateTaskActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void onSaveClicked() {
         Task newTask = new Task();
         newTask.setId(UUID.randomUUID().toString());
-        newTask.setName(name.getText().toString());
-        newTask.setDescription(description.getText().toString());
-        newTask.setPriority(priorityArray[prioritySpinner.getSelectedItemPosition()]);
-        newTask.setCreationDate(System.currentTimeMillis());
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        newTask.setCreatorId(user.getUid());
-        newTask.setResponsibleUserId(user.getUid());
+        String nameStr = nameInput.getEditText().getText().toString();
+        String descriptionStr = descriptionInput.getEditText().getText().toString();
 
-        saveTaskToFirebase(newTask);
+        if (checkForValid(nameStr, nameInput) && checkForValid(descriptionStr, descriptionInput)) {
+            newTask.setName(nameStr);
+
+            newTask.setDescription(descriptionStr);
+            newTask.setPriority(priorityArray[prioritySpinner.getSelectedItemPosition()]);
+            newTask.setCreationDate(System.currentTimeMillis());
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            newTask.setCreatorId(user.getUid());
+            newTask.setResponsibleUserId(user.getUid());
+
+            saveTaskToFirebase(newTask);
+        }
+    }
+
+    private static boolean checkForValid(String descriptionStr, TextInputLayout inputLayout) {
+        if (TextUtils.isEmpty(descriptionStr)) {
+            inputLayout.setError("Cannot be blank.");
+            inputLayout.setFocusable(true);
+            return false;
+        } else {
+            inputLayout.setError(null);
+            return true;
+        }
     }
 
     private void saveTaskToFirebase(Task newTask) {
