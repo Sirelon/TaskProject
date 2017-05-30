@@ -21,7 +21,21 @@ class BaseActivity extends AppCompatActivity {
 
     protected void hideProgress(){
         if (progressDialog != null && progressDialog.isShowing()){
-            progressDialog.hide();
+            progressDialog.dismiss();
         }
+    }
+
+    @Override
+    public void finish() {
+        hideProgress();
+        progressDialog = null;
+        super.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        hideProgress();
+        progressDialog = null;
+        super.onDestroy();
     }
 }

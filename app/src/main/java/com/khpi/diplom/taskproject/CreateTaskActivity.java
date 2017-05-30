@@ -33,6 +33,7 @@ public class CreateTaskActivity extends BaseActivity {
     private TextInputLayout taskUserInput;
     private Spinner prioritySpinner;
     private String[] priorityArray;
+    private User selectedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +100,8 @@ public class CreateTaskActivity extends BaseActivity {
                     users.add(user);
                 }
 
-                showUsersInDialog(users);
                 hideProgress();
+                showUsersInDialog(users);
             }
 
             @Override
@@ -112,7 +113,6 @@ public class CreateTaskActivity extends BaseActivity {
     }
 
     private void showUsersInDialog(final List<User> users) {
-
         List<String> userNames = new ArrayList<>(users.size());
         for (User user : users) {
             userNames.add(user.getName());
@@ -125,7 +125,9 @@ public class CreateTaskActivity extends BaseActivity {
         dialogBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(CreateTaskActivity.this, "User choose" + users.get(which), Toast.LENGTH_SHORT).show();
+                selectedUser = users.get(which);
+                taskUserInput.getEditText().setText(selectedUser.getName());
+                taskUserInput.setError(null);
             }
         });
         dialogBuilder.show();
@@ -137,7 +139,10 @@ public class CreateTaskActivity extends BaseActivity {
         String nameStr = nameInput.getEditText().getText().toString();
         String descriptionStr = descriptionInput.getEditText().getText().toString();
 
-        if (checkForValid(nameStr, nameInput) && checkForValid(descriptionStr, descriptionInput)) {
+        if (checkForValid(nameStr, nameInput)
+                && checkForValid(descriptionStr, descriptionInput)
+                && checkUserForValid()) {
+
             newTask.setName(nameStr);
 
             newTask.setDescription(descriptionStr);
@@ -145,9 +150,19 @@ public class CreateTaskActivity extends BaseActivity {
             newTask.setCreationDate(System.currentTimeMillis());
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             newTask.setCreatorId(user.getUid());
-            newTask.setResponsibleUserId(user.getUid());
+            newTask.setResponsibleUserId(selectedUser.getUid());
 
             saveTaskToFirebase(newTask);
+        }
+    }
+
+    private boolean checkUserForValid() {
+        if (selectedUser == null) {
+            taskUserInput.setError("Select user for continue.");
+            return false;
+        } else {
+            taskUserInput.setError(null);
+            return true;
         }
     }
 
