@@ -10,6 +10,9 @@ public class User {
     private final String name;
     private final String email;
 
+    User(){
+        this("", " ", "");
+    }
 
     public User(String uid, String name, String email) {
         this.uid = uid;

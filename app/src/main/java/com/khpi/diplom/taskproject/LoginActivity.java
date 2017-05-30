@@ -1,12 +1,10 @@
 package com.khpi.diplom.taskproject;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +19,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener {
 
     private static final String TAG = "TaskManager";
 
@@ -29,7 +27,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText emailField;
     private EditText passwordField;
     private TextInputLayout userNameInput;
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,21 +69,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 onSignUpClick(email, password);
             }
             break;
-        }
-    }
-
-    private void showProgress(){
-        if (progressDialog == null){
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Please wait");
-            progressDialog.setCancelable(false);
-        }
-        progressDialog.show();
-    }
-
-    private void hideProgress(){
-        if (progressDialog != null && progressDialog.isShowing()){
-            progressDialog.hide();
         }
     }
 
