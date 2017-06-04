@@ -3,6 +3,11 @@ package com.khpi.diplom.taskproject;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
                 openCreationCard();
             }
         });
+
+        RecyclerView taskList = (RecyclerView) findViewById(R.id.taskList);
+        taskList.setLayoutManager(new LinearLayoutManager(this));
+        taskList.setItemAnimator(new DefaultItemAnimator());
+        taskList.addItemDecoration(new DividerItemDecoration(this, OrientationHelper.VERTICAL));
+
+//        loadList();
     }
 
     private void openCreationCard() {
