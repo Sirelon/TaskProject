@@ -180,7 +180,7 @@ public class CreateTaskActivity extends BaseActivity {
     private void saveTaskToFirebase(Task newTask) {
         showProgress();
         FirebaseDatabase instance = FirebaseDatabase.getInstance();
-        DatabaseReference reference = instance.getReference("task").child(newTask.getId());
+        DatabaseReference reference = instance.getReference(Constants.REF_TASK).child(newTask.getId());
         reference.setValue(newTask).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
