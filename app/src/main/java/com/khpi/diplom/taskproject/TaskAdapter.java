@@ -1,5 +1,7 @@
 package com.khpi.diplom.taskproject;
 
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +40,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         holder.taskDescription.setText(task.getDescription());
         long creationDateLong = task.getCreationDate();
         holder.taskCreationDate.setText(dateUtil.formatDate(creationDateLong));
+
+        @ColorInt int color = ContextCompat.getColor(holder.itemView.getContext(), Util.getPriorityColorForTask(task));
+        holder.priorityView.setBackgroundColor(color);
     }
 
     @Override
@@ -51,9 +56,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         private final TextView taskName;
         private final TextView taskDescription;
         private final TextView taskCreationDate;
+        private final View priorityView;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            priorityView = itemView.findViewById(R.id.task_priority);
             taskName = (TextView) itemView.findViewById(R.id.task_name);
             taskDescription = (TextView) itemView.findViewById(R.id.task_description);
             taskCreationDate = (TextView) itemView.findViewById(R.id.task_creation_date);

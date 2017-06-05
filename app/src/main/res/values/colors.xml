@@ -5,4 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="grey_300">#bdbdbd</color>
     <color name="grey_100">#d7ccc8</color>
+
+    <color name="priorityHigh">#d32f2f</color>
+    <color name="priorityNormal">#303f9f</color>
+    <color name="priorityLow">#afb42b</color>
 </resources>
