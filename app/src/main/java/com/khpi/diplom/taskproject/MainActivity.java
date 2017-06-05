@@ -51,7 +51,17 @@ public class MainActivity extends BaseActivity {
         taskList.addItemDecoration(new DividerItemDecoration(this, OrientationHelper.VERTICAL));
 
         taskList.setAdapter(taskAdapter);
+        taskAdapter.setClickCallback(new ItemChooser<Task>() {
+            @Override
+            public void choose(Task item) {
+                onTaskClick(item);
+            }
+        });
         loadList();
+    }
+
+    private void onTaskClick(Task item) {
+        Toast.makeText(this, "item:" + item, Toast.LENGTH_SHORT).show();
     }
 
     private void loadList() {

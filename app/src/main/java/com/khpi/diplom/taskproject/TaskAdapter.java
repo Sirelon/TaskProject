@@ -20,10 +20,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     private final List<Task> data = new ArrayList<>();
 
     private final DateUtil dateUtil = new DateUtil();
+    private ItemChooser<Task> taskItemChooser;
 
     public void addData(List<Task> data) {
         this.data.addAll(data);
         notifyDataSetChanged();
+    }
+
+    public void setClickCallback(ItemChooser<Task> taskItemChooser) {
+        this.taskItemChooser = taskItemChooser;
     }
 
     @Override
@@ -34,7 +39,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         Task task = data.get(position);
         holder.taskName.setText(task.getName());
         holder.taskDescription.setText(task.getDescription());
@@ -43,6 +48,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
         @ColorInt int color = ContextCompat.getColor(holder.itemView.getContext(), Util.getPriorityColorForTask(task));
         holder.priorityView.setBackgroundColor(color);
+
+        if (taskItemChooser != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    taskItemChooser.choose(data.get(position));
+                }
+            });
+        }
     }
 
     @Override
