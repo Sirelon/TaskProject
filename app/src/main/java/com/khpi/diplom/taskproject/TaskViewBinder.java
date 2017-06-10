@@ -21,6 +21,8 @@ public class TaskViewBinder {
     private final TextView taskCreationDate;
     private final View priorityView;
     private final DateUtil dateUtil;
+    @Nullable
+    private final TextView taskClosedDate;
 
     public TaskViewBinder(View root, TextInputLayout taskName, TextInputLayout taskDescription, @Nullable TextInputLayout taskCreationDate, View priorityView) {
         this.root = root;
@@ -32,6 +34,7 @@ public class TaskViewBinder {
         } else {
             this.taskCreationDate = null;
         }
+        this.taskClosedDate = null;
         this.priorityView = priorityView;
     }
 
@@ -42,6 +45,7 @@ public class TaskViewBinder {
         taskName = (TextView) root.findViewById(R.id.task_name);
         taskDescription = (TextView) root.findViewById(R.id.task_description);
         taskCreationDate = (TextView) root.findViewById(R.id.task_creation_date);
+        taskClosedDate = (TextView) root.findViewById(R.id.task_closed_date);
     }
 
     public void bind(Task task) {
@@ -51,6 +55,11 @@ public class TaskViewBinder {
         if (taskCreationDate != null) {
             long creationDateLong = task.getCreationDate();
             taskCreationDate.setText(dateUtil.formatDate(creationDateLong));
+        }
+
+        if (taskClosedDate != null && task.isClose()) {
+            long closedDateLong = task.getClosedDate();
+            taskClosedDate.setText(dateUtil.formatDate(closedDateLong));
         }
 
         @ColorInt int color = ContextCompat.getColor(root.getContext(), Util.getPriorityColor(task.getPriority()));

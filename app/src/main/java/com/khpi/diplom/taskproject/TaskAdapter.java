@@ -1,5 +1,6 @@
 package com.khpi.diplom.taskproject;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,9 @@ import java.util.List;
  */
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
+
+    private static final int NORMAL_TASK = 1;
+    private static final int CLOSED_TASK = 2;
 
     private final List<Task> data = new ArrayList<>();
 
@@ -40,7 +44,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+        if (holder.getItemViewType() == CLOSED_TASK) {
+            int color = ContextCompat.getColor(holder.itemView.getContext(), R.color.grey_300);
+            holder.rootClosed.setVisibility(View.VISIBLE);
+            holder.rootTask.setBackgroundColor(color);
+        } else {
+            holder.rootClosed.setVisibility(View.GONE);
+        }
+
         Task task = data.get(position);
 
         holder.binder.bind(task);
@@ -49,7 +61,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    taskItemChooser.call(data.get(position));
+                    taskItemChooser.call(data.get(holder.getAdapterPosition()));
                 }
             });
         }
@@ -60,14 +72,23 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         return data.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        Task task = data.get(position);
+        return task.isClose() ? CLOSED_TASK : NORMAL_TASK;
+    }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         final TaskViewBinder binder;
+        private final View rootClosed;
+        private final View rootTask;
 
         public ViewHolder(View itemView) {
             super(itemView);
             binder = new TaskViewBinder(itemView);
+            rootClosed = itemView.findViewById(R.id.root_closed);
+            rootTask = itemView.findViewById(R.id.root_task);
         }
     }
 }
