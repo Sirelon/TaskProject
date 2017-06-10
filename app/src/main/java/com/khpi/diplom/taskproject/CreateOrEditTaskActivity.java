@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -33,6 +34,7 @@ import java.util.UUID;
 public class CreateOrEditTaskActivity extends BaseActivity {
 
     private static final String ARG_TASK = ".task";
+    private static final int DELETE_ITEM_ID = 12;
 
     public static Intent getIntentForCreation(Activity activity) {
         return new Intent(activity, CreateOrEditTaskActivity.class);
@@ -133,16 +135,29 @@ public class CreateOrEditTaskActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
             finish();
+            return true;
+        } else if (itemId == DELETE_ITEM_ID) {
+            doDeleteTask();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
 
-    private boolean editable() {
-        return editableTask != null;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (editableTask != null) {
+            menu.add(1, DELETE_ITEM_ID, 1, "Delete").setIcon(R.drawable.ic_delete).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        }
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    private void doDeleteTask() {
+
     }
 
     private void showDialogWithUsers() {

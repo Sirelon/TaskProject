@@ -93,12 +93,13 @@ public class TaskDetailActivity extends BaseActivity {
         }
     }
 
-    private void creatorIsMe(Task task) {
+    private void creatorIsMe(final Task task) {
         actionButton.setImageResource(R.drawable.ic_mode_edit);
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TaskDetailActivity.this, "On Edit should open", Toast.LENGTH_SHORT).show();
+                Intent intent = CreateOrEditTaskActivity.getIntentForEdit(TaskDetailActivity.this, task);
+                startActivity(intent);
             }
         });
         actionButton.show();
