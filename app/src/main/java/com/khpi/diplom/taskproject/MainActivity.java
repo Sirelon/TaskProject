@@ -31,6 +31,7 @@ public class MainActivity extends BaseActivity {
         baseActivity.hideProgress();
         Intent mainActivity = new Intent(baseActivity, MainActivity.class);
         baseActivity.startActivity(mainActivity);
+        mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         baseActivity.finish();
     }
 
