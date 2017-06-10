@@ -264,7 +264,8 @@ public class CreateOrEditTaskActivity extends BaseActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 hideProgress();
-                Toast.makeText(CreateOrEditTaskActivity.this, "Task was created", Toast.LENGTH_SHORT).show();
+                String text = editableTask == null ? "Task was created" : "Task was edited";
+                Toast.makeText(CreateOrEditTaskActivity.this, text, Toast.LENGTH_SHORT).show();
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
