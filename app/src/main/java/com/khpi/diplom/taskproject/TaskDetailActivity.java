@@ -3,19 +3,22 @@ package com.khpi.diplom.taskproject;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class TaskDetailActivity extends AppCompatActivity {
+public class TaskDetailActivity extends BaseActivity {
 
     private static final String ARG_TASK = ".task";
+    private FirebaseUser currentUser;
 
     public static Intent getStartIntent(Context context, Task item) {
         Intent intent = new Intent(context, TaskDetailActivity.class);
@@ -29,6 +32,8 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         View root = getLayoutInflater().inflate(R.layout.activity_task_detail, null);
         setContentView(root);
+
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
         TaskViewBinder binder = new TaskViewBinder(root);
 
@@ -49,22 +54,44 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     private void initByReporter(Task task) {
         final TextView reporterView = (TextView) findViewById(R.id.task_reportedUser);
-        loadUser(task.getResponsibleUserId(), reporterView, new CallableArg<User>() {
-            @Override
-            public void call(User item) {
-                onReportedUserLoad(item);
-            }
-        });
+        String responsibleUserId = task.getResponsibleUserId();
+        if (currentUser.getUid().equals(responsibleUserId)) {
+            reporterView.setText("Me");
+            highlightText(reporterView);
+            creatorIsMe(task);
+        } else {
+            loadUser(responsibleUserId, reporterView, new CallableArg<User>() {
+                @Override
+                public void call(User item) {
+                    onReportedUserLoad(item);
+                }
+            });
+        }
     }
 
     private void initByCreator(Task task) {
         final TextView creatorView = (TextView) findViewById(R.id.task_creadedUser);
-        loadUser(task.getCreatorId(), creatorView, new CallableArg<User>() {
-            @Override
-            public void call(User item) {
-                onCreatorLoaded(item);
-            }
-        });
+        String creatorId = task.getCreatorId();
+        if (currentUser.getUid().equals(creatorId)) {
+            creatorView.setText("Me");
+            highlightText(creatorView);
+            creatorIsMe(task);
+        } else {
+            loadUser(creatorId, creatorView, new CallableArg<User>() {
+                @Override
+                public void call(User item) {
+                    onCreatorLoaded(item);
+                }
+            });
+        }
+    }
+
+    private void highlightText(TextView creatorView) {
+        creatorView.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+    }
+
+    private void creatorIsMe(Task task) {
+
     }
 
     private void loadUser(String userId, final TextView userView, final CallableArg<User> callback) {

@@ -73,13 +73,13 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void showProgress() {
-        super.showProgress();
+//        super.showProgress();
         swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     protected void hideProgress() {
-        super.hideProgress();
+//        super.hideProgress();
         swipeRefreshLayout.setRefreshing(false);
     }
 
