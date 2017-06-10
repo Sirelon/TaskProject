@@ -26,6 +26,8 @@
             android:name=".CreateTaskActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
+        <activity android:name=".TaskDetailActivity" android:parentActivityName=".MainActivity">
+        </activity>
     </application>
 
 </manifest>

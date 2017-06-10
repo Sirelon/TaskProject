@@ -35,7 +35,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/task_creation_date"
+            app:layout_constraintEnd_toStartOf="@+id/task_creadedUser"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintStart_toEndOf="@+id/task_priority"
             app:layout_constraintTop_toTopOf="parent"
@@ -54,7 +54,7 @@
             tools:text="THe description of task. THere would be large and large and large"/>
 
         <TextView
-            android:id="@+id/task_creation_date"
+            android:id="@+id/task_creadedUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="0dp"

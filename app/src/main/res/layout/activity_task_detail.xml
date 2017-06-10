@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context="com.khpi.diplom.taskproject.TaskDetailActivity">
+
+    <TextView
+        android:id="@+id/task_priority"
+        style="@style/TextAppearance.AppCompat.Title.Inverse"
+        android:layout_width="0dp"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/task_name"
+        tools:background="@color/colorPrimary"
+        tools:text="Hight"/>
+
+    <TextView
+        android:id="@+id/task_name"
+        style="@style/Base.TextAppearance.AppCompat.Headline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="The title of task"/>
+
+    <TextView
+        android:id="@+id/task_description"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:maxLines="2"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
+        app:layout_constraintEnd_toStartOf="@+id/vCenter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/task_priority"
+        tools:text="THe description of task. THere would be large and large and large"/>
+
+    <TextView
+        android:id="@+id/prompt_created"
+        style="@style/Base.TextAppearance.AppCompat.Caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:text="Created by:"
+        app:layout_constraintEnd_toStartOf="@+id/task_creadedUser"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/vCenter"
+        app:layout_constraintTop_toBottomOf="@+id/prompt_reported"/>
+
+    <TextView
+        android:id="@+id/prompt_create_date"
+        style="@style/Base.TextAppearance.AppCompat.Caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:text="Creation date:"
+        app:layout_constraintEnd_toStartOf="@+id/task_creation_date"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/vCenter"
+        app:layout_constraintTop_toBottomOf="@+id/prompt_created"/>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/vCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"/>
+
+    <TextView
+        android:id="@+id/prompt_reported"
+        style="@style/Base.TextAppearance.AppCompat.Caption"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:text="Reported to:"
+        app:layout_constraintEnd_toStartOf="@+id/task_reportedUser"
+        app:layout_constraintStart_toEndOf="@+id/vCenter"
+        app:layout_constraintTop_toBottomOf="@+id/task_priority"/>
+
+    <TextView
+        android:id="@+id/task_reportedUser"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/prompt_reported"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/prompt_reported"
+        app:layout_constraintTop_toTopOf="@+id/prompt_reported"
+        tools:text="Sirelon"/>
+
+
+    <TextView
+        android:id="@+id/task_creation_date"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/prompt_create_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/prompt_create_date"
+        app:layout_constraintTop_toTopOf="@+id/prompt_create_date"
+        tools:text="12.12.12 Asda 1e "/>
+
+    <TextView
+        android:id="@+id/task_creadedUser"
+        style="@style/TextAppearance.AppCompat.Subhead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/prompt_created"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/prompt_created"
+        app:layout_constraintTop_toTopOf="@+id/prompt_created"
+        tools:layout_editor_absoluteX="333dp"
+        tools:layout_editor_absoluteY="113dp"
+        tools:text="New User"/>
+
+</android.support.constraint.ConstraintLayout>

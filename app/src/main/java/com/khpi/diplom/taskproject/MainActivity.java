@@ -61,7 +61,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void onTaskClick(Task item) {
-        Toast.makeText(this, "item:" + item, Toast.LENGTH_SHORT).show();
+        Intent taskDetail = TaskDetailActivity.getStartIntent(this, item);
+        startActivity(taskDetail);
     }
 
     private void loadList() {

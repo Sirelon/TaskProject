@@ -1,10 +1,13 @@
 package com.khpi.diplom.taskproject;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created on 25/05/2017 22:35.
  */
 
-public class Task {
+public class Task implements Parcelable{
 
     private String id;
     private String creatorId;
@@ -14,6 +17,48 @@ public class Task {
     private String responsibleUserId;
 
     private String priority;
+
+    public Task(){
+
+    }
+
+    protected Task(Parcel in) {
+        id = in.readString();
+        creatorId = in.readString();
+        name = in.readString();
+        description = in.readString();
+        creationDate = in.readLong();
+        responsibleUserId = in.readString();
+        priority = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(creatorId);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeLong(creationDate);
+        dest.writeString(responsibleUserId);
+        dest.writeString(priority);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 
     public String getId() {
         return id;
