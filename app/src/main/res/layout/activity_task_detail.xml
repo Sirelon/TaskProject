@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="8dp"
     tools:context="com.khpi.diplom.taskproject.TaskDetailActivity">
@@ -154,5 +154,21 @@
         app:layout_constraintTop_toBottomOf="@+id/task_reportedUser"
         tools:layout_editor_absoluteY="117dp"
         tools:text="New User asdas asdas asda "/>
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_action"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:clickable="true"
+        android:src="@drawable/ic_mode_edit"
+        app:backgroundTint="@color/colorDone"
+        app:fabSize="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:rippleColor="@color/colorDoneRipple"/>
+
 
 </android.support.constraint.ConstraintLayout>

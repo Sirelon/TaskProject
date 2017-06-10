@@ -9,4 +9,6 @@
     <color name="priorityHigh">#d32f2f</color>
     <color name="priorityNormal">#303f9f</color>
     <color name="priorityLow">#afb42b</color>
+    <color name="colorDone">#43a047</color>
+    <color name="colorDoneRipple">#00c853</color>
 </resources>
