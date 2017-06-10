@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -68,8 +70,21 @@ public class CreateOrEditTaskActivity extends BaseActivity {
         taskUserInput = (TextInputLayout) findViewById(R.id.task_reportedUser);
 
         prioritySpinner = (Spinner) findViewById(R.id.task_priority);
-
         priorityArray = getResources().getStringArray(R.array.arr_priority);
+
+        prioritySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String priority = priorityArray[position];
+                int color = Util.getPriorityColor(priority);
+                prioritySpinner.setBackgroundColor(ContextCompat.getColor(CreateOrEditTaskActivity.this, color));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         findViewById(R.id.btn_save).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,8 +237,15 @@ public class CreateOrEditTaskActivity extends BaseActivity {
     }
 
     private void onSaveClicked() {
-        Task newTask = new Task();
-        newTask.setId(UUID.randomUUID().toString());
+        Task task;
+
+        if (editableTask == null) {
+            task = new Task();
+            task.setId(UUID.randomUUID().toString());
+        } else {
+            task = editableTask;
+        }
+
         String nameStr = nameInput.getEditText().getText().toString();
         String descriptionStr = descriptionInput.getEditText().getText().toString();
 
@@ -231,16 +253,16 @@ public class CreateOrEditTaskActivity extends BaseActivity {
                 && checkForValid(descriptionStr, descriptionInput)
                 && checkUserForValid()) {
 
-            newTask.setName(nameStr);
+            task.setName(nameStr);
 
-            newTask.setDescription(descriptionStr);
-            newTask.setPriority(priorityArray[prioritySpinner.getSelectedItemPosition()]);
-            newTask.setCreationDate(System.currentTimeMillis());
+            task.setDescription(descriptionStr);
+            task.setPriority(priorityArray[prioritySpinner.getSelectedItemPosition()]);
+            task.setCreationDate(System.currentTimeMillis());
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            newTask.setCreatorId(user.getUid());
-            newTask.setResponsibleUserId(selectedUser.getUid());
+            task.setCreatorId(user.getUid());
+            task.setResponsibleUserId(selectedUser.getUid());
 
-            saveTaskToFirebase(newTask);
+            saveTaskToFirebase(task);
         }
     }
 

@@ -9,8 +9,8 @@ import android.support.annotation.ColorRes;
 public class Util {
 
     @ColorRes
-    public static int getPriorityColorForTask(Task task) {
-        switch (task.getPriority().toLowerCase()) {
+    public static int getPriorityColor(String priority) {
+        switch (priority.toLowerCase()) {
             case "high":
                 return R.color.priorityHigh;
             case "normal":

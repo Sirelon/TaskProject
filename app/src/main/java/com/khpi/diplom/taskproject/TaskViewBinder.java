@@ -52,8 +52,8 @@ public class TaskViewBinder {
             long creationDateLong = task.getCreationDate();
             taskCreationDate.setText(dateUtil.formatDate(creationDateLong));
         }
-        
-        @ColorInt int color = ContextCompat.getColor(root.getContext(), Util.getPriorityColorForTask(task));
+
+        @ColorInt int color = ContextCompat.getColor(root.getContext(), Util.getPriorityColor(task.getPriority()));
         priorityView.setBackgroundColor(color);
 
         if (priorityView instanceof TextView) {
