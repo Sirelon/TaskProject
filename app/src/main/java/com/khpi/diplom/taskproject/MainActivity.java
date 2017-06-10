@@ -115,7 +115,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void openCreationCard() {
-        Intent createIntent = new Intent(this, CreateTaskActivity.class);
+        Intent createIntent = CreateOrEditTaskActivity.getIntentForCreation(this);
         startActivity(createIntent);
     }
 

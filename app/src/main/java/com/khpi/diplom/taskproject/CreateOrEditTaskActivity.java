@@ -1,8 +1,11 @@
 package com.khpi.diplom.taskproject;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -10,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,7 +30,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class CreateTaskActivity extends BaseActivity {
+public class CreateOrEditTaskActivity extends BaseActivity {
+
+    private static final String ARG_TASK = ".task";
+
+    public static Intent getIntentForCreation(Activity activity) {
+        return new Intent(activity, CreateOrEditTaskActivity.class);
+    }
+
+    public static Intent getIntentForEdit(Activity activity, Task task) {
+        Intent intent = getIntentForCreation(activity);
+        intent.putExtra(ARG_TASK, task);
+        return intent;
+    }
 
     private TextInputLayout nameInput;
     private TextInputLayout descriptionInput;
@@ -35,18 +51,22 @@ public class CreateTaskActivity extends BaseActivity {
     private String[] priorityArray;
     private User selectedUser;
 
+    @Nullable
+    private Task editableTask;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_task);
+        View root = getLayoutInflater().inflate(R.layout.activity_create_task, null);
+        setContentView(root);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        nameInput = (TextInputLayout) findViewById(R.id.field_taskName);
-        descriptionInput = (TextInputLayout) findViewById(R.id.field_taskDescription);
-        taskUserInput = (TextInputLayout) findViewById(R.id.field_taskUser);
+        nameInput = (TextInputLayout) findViewById(R.id.task_name);
+        descriptionInput = (TextInputLayout) findViewById(R.id.task_description);
+        taskUserInput = (TextInputLayout) findViewById(R.id.task_reportedUser);
 
-        prioritySpinner = (Spinner) findViewById(R.id.list_priority);
+        prioritySpinner = (Spinner) findViewById(R.id.task_priority);
 
         priorityArray = getResources().getStringArray(R.array.arr_priority);
 
@@ -72,6 +92,43 @@ public class CreateTaskActivity extends BaseActivity {
                 showDialogWithUsers();
             }
         });
+
+        editableTask = getIntent().getParcelableExtra(ARG_TASK);
+
+        bindViews(root);
+    }
+
+    private void bindViews(View root) {
+        if (editableTask == null)
+            return;
+
+        TaskViewBinder viewBinder = new TaskViewBinder(root, nameInput, descriptionInput, null, prioritySpinner);
+        viewBinder.bind(editableTask);
+
+        final TextView userView = taskUserInput.getEditText();
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference = reference.child(Constants.REF_USER).child(editableTask.getResponsibleUserId());
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!isFinishing()) {
+                    User reporterUser = dataSnapshot.getValue(User.class);
+                    if (null != reporterUser) {
+                        bindUserOnView(reporterUser);
+                    } else {
+                        onCancelled(DatabaseError.fromException(new NullPointerException("User is empty")));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                databaseError.toException().printStackTrace();
+                userView.setError("Cannot load user.");
+                userView.setText("Cannot load user.");
+            }
+        });
     }
 
     @Override
@@ -84,8 +141,11 @@ public class CreateTaskActivity extends BaseActivity {
         }
     }
 
-    private void showDialogWithUsers() {
+    private boolean editable() {
+        return editableTask != null;
+    }
 
+    private void showDialogWithUsers() {
         showProgress();
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference reference = firebaseDatabase.getReference().child("users");
@@ -106,7 +166,7 @@ public class CreateTaskActivity extends BaseActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(CreateTaskActivity.this, "Canceled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateOrEditTaskActivity.this, "Canceled", Toast.LENGTH_SHORT).show();
                 hideProgress();
             }
         });
@@ -118,19 +178,23 @@ public class CreateTaskActivity extends BaseActivity {
             userNames.add(user.getName());
         }
 
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CreateTaskActivity.this);
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(CreateOrEditTaskActivity.this);
         dialogBuilder.setTitle("Choose user");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userNames);
         dialogBuilder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                selectedUser = users.get(which);
-                taskUserInput.getEditText().setText(selectedUser.getName());
-                taskUserInput.setError(null);
+                bindUserOnView(users.get(which));
             }
         });
         dialogBuilder.show();
+    }
+
+    private void bindUserOnView(User user) {
+        selectedUser = user;
+        taskUserInput.getEditText().setText(selectedUser.getName());
+        taskUserInput.setError(null);
     }
 
     private void onSaveClicked() {
@@ -185,7 +249,7 @@ public class CreateTaskActivity extends BaseActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 hideProgress();
-                Toast.makeText(CreateTaskActivity.this, "Task was created", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CreateOrEditTaskActivity.this, "Task was created", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -193,7 +257,7 @@ public class CreateTaskActivity extends BaseActivity {
             public void onFailure(@NonNull Exception e) {
                 hideProgress();
                 e.printStackTrace();
-                Toast.makeText(CreateTaskActivity.this, "Task creation error. " + e.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateOrEditTaskActivity.this, "Task creation error. " + e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

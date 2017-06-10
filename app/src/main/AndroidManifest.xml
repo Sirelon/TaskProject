@@ -23,7 +23,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateTaskActivity"
+            android:name=".CreateOrEditTaskActivity"
             android:windowSoftInputMode="adjustResize">
         </activity>
         <activity android:name=".TaskDetailActivity" android:parentActivityName=".MainActivity">
