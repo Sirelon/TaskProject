@@ -24,7 +24,7 @@ public class TaskViewBinder {
         priorityView = root.findViewById(R.id.task_priority);
         taskName = (TextView) root.findViewById(R.id.task_name);
         taskDescription = (TextView) root.findViewById(R.id.task_description);
-        taskCreationDate = (TextView) root.findViewById(R.id.task_creadedUser);
+        taskCreationDate = (TextView) root.findViewById(R.id.task_creation_date);
     }
 
     public void bind(Task task){

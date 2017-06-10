@@ -10,13 +10,28 @@
     tools:context="com.khpi.diplom.taskproject.TaskDetailActivity">
 
     <TextView
-        android:id="@+id/task_priority"
-        style="@style/TextAppearance.AppCompat.Title.Inverse"
+        android:id="@+id/task_name"
+        style="@style/Base.TextAppearance.AppCompat.Display1"
         android:layout_width="0dp"
-        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="The title "/>
+
+    <TextView
+        android:id="@+id/task_priority"
+        style="@style/TextAppearance.AppCompat.Title.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/task_name"
@@ -24,58 +39,50 @@
         tools:text="Hight"/>
 
     <TextView
-        android:id="@+id/task_name"
-        style="@style/Base.TextAppearance.AppCompat.Headline"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="The title of task"/>
-
-    <TextView
         android:id="@+id/task_description"
+        style="@style/TextAppearance.AppCompat.Medium"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:maxLines="2"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Body1"
         app:layout_constraintEnd_toStartOf="@+id/vCenter"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/task_priority"
-        tools:text="THe description of task. THere would be large and large and large"/>
+        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ac accumsan elit. Suspendisse euismod finibus elit a suscipit. "/>
 
     <TextView
         android:id="@+id/prompt_created"
-        style="@style/Base.TextAppearance.AppCompat.Caption"
-        android:layout_width="0dp"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
         android:text="Created by:"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/task_creadedUser"
         app:layout_constraintEnd_toStartOf="@+id/task_creadedUser"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/vCenter"
-        app:layout_constraintTop_toBottomOf="@+id/prompt_reported"/>
+        app:layout_constraintStart_toStartOf="@+id/vCenter"
+        app:layout_constraintTop_toTopOf="@+id/task_creadedUser"
+        tools:layout_editor_absoluteY="138dp"/>
 
     <TextView
         android:id="@+id/prompt_create_date"
-        style="@style/Base.TextAppearance.AppCompat.Caption"
-        android:layout_width="0dp"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:text="Creation date:"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/task_creation_date"
         app:layout_constraintEnd_toStartOf="@+id/task_creation_date"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/vCenter"
-        app:layout_constraintTop_toBottomOf="@+id/prompt_created"/>
+        app:layout_constraintStart_toStartOf="@+id/vCenter"
+        app:layout_constraintTop_toTopOf="@+id/task_creation_date"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/vCenter"
@@ -86,57 +93,66 @@
 
     <TextView
         android:id="@+id/prompt_reported"
-        style="@style/Base.TextAppearance.AppCompat.Caption"
-        android:layout_width="0dp"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
         android:text="Reported to:"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/task_reportedUser"
         app:layout_constraintEnd_toStartOf="@+id/task_reportedUser"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/vCenter"
-        app:layout_constraintTop_toBottomOf="@+id/task_priority"/>
+        app:layout_constraintStart_toStartOf="@+id/vCenter"
+        app:layout_constraintTop_toTopOf="@+id/task_reportedUser"
+        tools:layout_editor_absoluteY="99dp"/>
 
     <TextView
         android:id="@+id/task_reportedUser"
         style="@style/TextAppearance.AppCompat.Subhead"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/prompt_reported"
+        android:layout_marginTop="8dp"
+        android:textAlignment="viewEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/prompt_reported"
-        app:layout_constraintTop_toTopOf="@+id/prompt_reported"
+        app:layout_constraintTop_toBottomOf="@+id/task_priority"
+        tools:layout_editor_absoluteY="97dp"
         tools:text="Sirelon"/>
 
 
     <TextView
         android:id="@+id/task_creation_date"
         style="@style/TextAppearance.AppCompat.Subhead"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/prompt_create_date"
+        android:gravity="right"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/prompt_create_date"
-        app:layout_constraintTop_toTopOf="@+id/prompt_create_date"
-        tools:text="12.12.12 Asda 1e "/>
+        app:layout_constraintTop_toBottomOf="@+id/task_creadedUser"
+        tools:text="12.12.12 Asda 1e assadassddqwdqwdqwdqwdqwa"/>
 
     <TextView
         android:id="@+id/task_creadedUser"
         style="@style/TextAppearance.AppCompat.Subhead"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/prompt_created"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="viewEnd"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/prompt_created"
-        app:layout_constraintTop_toTopOf="@+id/prompt_created"
-        tools:layout_editor_absoluteX="333dp"
-        tools:layout_editor_absoluteY="113dp"
-        tools:text="New User"/>
+        app:layout_constraintTop_toBottomOf="@+id/task_reportedUser"
+        tools:layout_editor_absoluteY="117dp"
+        tools:text="New User asdas asdas asda "/>
 
 </android.support.constraint.ConstraintLayout>

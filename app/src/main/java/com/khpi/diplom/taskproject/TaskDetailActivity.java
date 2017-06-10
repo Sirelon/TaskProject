@@ -2,8 +2,9 @@ package com.khpi.diplom.taskproject;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
@@ -12,7 +13,14 @@ public class TaskDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_task_detail);
+
+        View root = getLayoutInflater().inflate(R.layout.activity_task_detail, null);
+        setContentView(root);
+
+        TaskViewBinder binder = new TaskViewBinder(root);
+
+        Task task = getIntent().getParcelableExtra(ARG_TASK);
+        binder.bind(task);
     }
 
     public static Intent getStartIntent(Context context, Task item) {

@@ -54,7 +54,7 @@
             tools:text="THe description of task. THere would be large and large and large"/>
 
         <TextView
-            android:id="@+id/task_creadedUser"
+            android:id="@+id/task_creation_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="0dp"
