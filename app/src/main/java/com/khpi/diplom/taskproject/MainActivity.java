@@ -27,14 +27,6 @@ public class MainActivity extends BaseActivity {
     private TaskAdapter taskAdapter = new TaskAdapter();
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    public static void start(BaseActivity baseActivity) {
-        baseActivity.hideProgress();
-        Intent mainActivity = new Intent(baseActivity, MainActivity.class);
-        baseActivity.startActivity(mainActivity);
-        mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        baseActivity.finish();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +68,14 @@ public class MainActivity extends BaseActivity {
             }
         });
         loadList();
+    }
+
+    public static void start(BaseActivity baseActivity) {
+        baseActivity.hideProgress();
+        Intent mainActivity = new Intent(baseActivity, MainActivity.class);
+        baseActivity.startActivity(mainActivity);
+        mainActivity.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        baseActivity.finish();
     }
 
 

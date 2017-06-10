@@ -18,6 +18,9 @@ public class Task implements Parcelable{
 
     private String priority;
 
+    private boolean isClose;
+    private long closedDate;
+
     public Task(){
 
     }
@@ -30,6 +33,8 @@ public class Task implements Parcelable{
         creationDate = in.readLong();
         responsibleUserId = in.readString();
         priority = in.readString();
+        isClose = in.readByte() != 0;
+        closedDate = in.readLong();
     }
 
     @Override
@@ -41,6 +46,8 @@ public class Task implements Parcelable{
         dest.writeLong(creationDate);
         dest.writeString(responsibleUserId);
         dest.writeString(priority);
+        dest.writeByte((byte) (isClose ? 1 : 0));
+        dest.writeLong(closedDate);
     }
 
     @Override
@@ -114,5 +121,21 @@ public class Task implements Parcelable{
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public boolean isClose() {
+        return isClose;
+    }
+
+    public void setClose(boolean close) {
+        isClose = close;
+    }
+
+    public long getClosedDate() {
+        return closedDate;
+    }
+
+    public void setClosedDate(long closedDate) {
+        this.closedDate = closedDate;
     }
 }

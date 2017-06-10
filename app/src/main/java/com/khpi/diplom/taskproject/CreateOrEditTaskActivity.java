@@ -261,7 +261,8 @@ public class CreateOrEditTaskActivity extends BaseActivity {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             task.setCreatorId(user.getUid());
             task.setResponsibleUserId(selectedUser.getUid());
-
+            task.setClose(false);
+            task.setClosedDate(-1);
             saveTaskToFirebase(task);
         }
     }

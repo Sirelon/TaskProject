@@ -1,13 +1,14 @@
 package com.khpi.diplom.taskproject;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -105,15 +106,36 @@ public class TaskDetailActivity extends BaseActivity {
         actionButton.show();
     }
 
-    private void reporterIsMe(Task task) {
+    private void reporterIsMe(final Task task) {
         actionButton.setImageResource(R.drawable.ic_done);
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(TaskDetailActivity.this, "TASK IS DONE", Toast.LENGTH_SHORT).show();
+                doCloseTask(task);
             }
         });
         actionButton.show();
+    }
+
+    private void doCloseTask(final Task task) {
+        new AlertDialog.Builder(this).setTitle("Close task")
+                .setMessage("Have you done this task?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        closeTaskFirebase(task);
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
+
+    private void closeTaskFirebase(Task task) {
+        task.setClosedDate(System.currentTimeMillis());
+        task.setClose(true);
+        DatabaseReference taskRef = FirebaseDatabase.getInstance().getReference().child(Constants.REF_TASK).child(task.getId());
+        taskRef.setValue(task);
+        MainActivity.start(this);
     }
 
     private void highlightText(TextView creatorView) {
