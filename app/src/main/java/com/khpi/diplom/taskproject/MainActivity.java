@@ -80,6 +80,12 @@ public class MainActivity extends BaseActivity {
 
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        loadList();
+    }
+
+    @Override
     protected void showProgress() {
 //        super.showProgress();
         swipeRefreshLayout.setRefreshing(true);
