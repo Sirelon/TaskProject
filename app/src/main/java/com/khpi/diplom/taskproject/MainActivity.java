@@ -2,6 +2,7 @@ package com.khpi.diplom.taskproject;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +25,7 @@ public class MainActivity extends BaseActivity {
     private static final String TAG = "MainActivity";
 
     private TaskAdapter taskAdapter = new TaskAdapter();
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,14 @@ public class MainActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_main);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadList();
+            }
+        });
 
         findViewById(R.id.btn_newTask).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +70,26 @@ public class MainActivity extends BaseActivity {
         loadList();
     }
 
+
+    @Override
+    protected void showProgress() {
+        super.showProgress();
+        swipeRefreshLayout.setRefreshing(true);
+    }
+
+    @Override
+    protected void hideProgress() {
+        super.hideProgress();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
     private void onTaskClick(Task item) {
         Intent taskDetail = TaskDetailActivity.getStartIntent(this, item);
         startActivity(taskDetail);
     }
 
     private void loadList() {
+        taskAdapter.deleteAll();
         showProgress();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         database.getReference().child(Constants.REF_TASK).addListenerForSingleValueEvent(new ValueEventListener() {

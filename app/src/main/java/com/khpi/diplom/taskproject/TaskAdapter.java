@@ -23,6 +23,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void deleteAll() {
+        this.data.clear();
+        notifyDataSetChanged();
+    }
+
     public void setClickCallback(CallableArg<Task> taskItemChooser) {
         this.taskItemChooser = taskItemChooser;
     }
