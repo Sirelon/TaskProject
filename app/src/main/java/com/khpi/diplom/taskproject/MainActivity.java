@@ -27,6 +27,13 @@ public class MainActivity extends BaseActivity {
     private TaskAdapter taskAdapter = new TaskAdapter();
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    public static void start(BaseActivity baseActivity) {
+        baseActivity.hideProgress();
+        Intent mainActivity = new Intent(baseActivity, MainActivity.class);
+        baseActivity.startActivity(mainActivity);
+        baseActivity.finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

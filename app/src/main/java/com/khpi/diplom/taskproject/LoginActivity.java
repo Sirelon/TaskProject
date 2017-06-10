@@ -169,9 +169,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void openMain() {
-        hideProgress();
-        Intent mainActivity = new Intent(this, MainActivity.class);
-        startActivity(mainActivity);
-        finish();
+        MainActivity.start(this);
     }
 }

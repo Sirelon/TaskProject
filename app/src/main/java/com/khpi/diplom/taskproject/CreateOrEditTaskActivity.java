@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -107,8 +106,6 @@ public class CreateOrEditTaskActivity extends BaseActivity {
         TaskViewBinder viewBinder = new TaskViewBinder(root, nameInput, descriptionInput, null, prioritySpinner);
         viewBinder.bind(editableTask);
 
-        final TextView userView = taskUserInput.getEditText();
-
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
         reference = reference.child(Constants.REF_USER).child(editableTask.getResponsibleUserId());
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -127,8 +124,6 @@ public class CreateOrEditTaskActivity extends BaseActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 databaseError.toException().printStackTrace();
-                userView.setError("Cannot load user.");
-                userView.setText("Cannot load user.");
             }
         });
     }
@@ -157,7 +152,21 @@ public class CreateOrEditTaskActivity extends BaseActivity {
     }
 
     private void doDeleteTask() {
-
+        new AlertDialog.Builder(this)
+                .setTitle("Deletion task")
+                .setMessage("Are you sure to want delete this task?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        DatabaseReference taskFirebase = FirebaseDatabase.getInstance().getReference().child(Constants.REF_TASK).child(editableTask.getId());
+                        taskFirebase.setValue(null);
+                        dialog.dismiss();
+                        Toast.makeText(CreateOrEditTaskActivity.this, "Task was deleted", Toast.LENGTH_SHORT).show();
+                        MainActivity.start(CreateOrEditTaskActivity.this);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     private void showDialogWithUsers() {
@@ -266,7 +275,7 @@ public class CreateOrEditTaskActivity extends BaseActivity {
                 hideProgress();
                 String text = editableTask == null ? "Task was created" : "Task was edited";
                 Toast.makeText(CreateOrEditTaskActivity.this, text, Toast.LENGTH_SHORT).show();
-                finish();
+                MainActivity.start(CreateOrEditTaskActivity.this);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
