@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -95,26 +96,34 @@ public class TaskDetailActivity extends BaseActivity {
     }
 
     private void creatorIsMe(final Task task) {
-        actionButton.setImageResource(R.drawable.ic_mode_edit);
-        actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = CreateOrEditTaskActivity.getIntentForEdit(TaskDetailActivity.this, task);
-                startActivity(intent);
-            }
-        });
-        actionButton.show();
+        if (task.isClose()) {
+            Toast.makeText(this, "Task is closed already", Toast.LENGTH_SHORT).show();
+        } else {
+            actionButton.setImageResource(R.drawable.ic_mode_edit);
+            actionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = CreateOrEditTaskActivity.getIntentForEdit(TaskDetailActivity.this, task);
+                    startActivity(intent);
+                }
+            });
+            actionButton.show();
+        }
     }
 
     private void reporterIsMe(final Task task) {
-        actionButton.setImageResource(R.drawable.ic_done);
-        actionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                doCloseTask(task);
-            }
-        });
-        actionButton.show();
+        if (task.isClose()) {
+            Toast.makeText(this, "Task is closed already", Toast.LENGTH_SHORT).show();
+        } else {
+            actionButton.setImageResource(R.drawable.ic_done);
+            actionButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    doCloseTask(task);
+                }
+            });
+            actionButton.show();
+        }
     }
 
     private void doCloseTask(final Task task) {

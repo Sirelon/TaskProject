@@ -156,6 +156,43 @@
         tools:text="New User asdas asdas asda "/>
 
 
+    <LinearLayout
+        android:id="@+id/root_closed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorDone"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/closed_prompt"
+            style="@style/TextAppearance.AppCompat.Subhead.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Closed on:"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/task_closed_date"
+            style="@style/TextAppearance.AppCompat.Subhead.Inverse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            tools:text="12.12.12"
+            />
+    </LinearLayout>
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_action"
         android:layout_width="60dp"
