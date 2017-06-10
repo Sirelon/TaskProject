@@ -147,7 +147,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void saveUser(FirebaseUser firebaseUser, String username) {
         User user = new User(firebaseUser.getUid(), username, firebaseUser.getEmail());
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-        DatabaseReference reference = firebaseDatabase.getReference().child("users").child(user.getUid());
+        DatabaseReference reference = firebaseDatabase.getReference().child(Constants.REF_USER).child(user.getUid());
         reference.setValue(user)
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override

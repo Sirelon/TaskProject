@@ -16,14 +16,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private final List<Task> data = new ArrayList<>();
 
-    private ItemChooser<Task> taskItemChooser;
+    private CallableArg<Task> taskItemChooser;
 
     public void addData(List<Task> data) {
         this.data.addAll(data);
         notifyDataSetChanged();
     }
 
-    public void setClickCallback(ItemChooser<Task> taskItemChooser) {
+    public void setClickCallback(CallableArg<Task> taskItemChooser) {
         this.taskItemChooser = taskItemChooser;
     }
 
@@ -44,7 +44,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    taskItemChooser.choose(data.get(position));
+                    taskItemChooser.call(data.get(position));
                 }
             });
         }

@@ -51,9 +51,9 @@ public class MainActivity extends BaseActivity {
         taskList.addItemDecoration(new DividerItemDecoration(this, OrientationHelper.VERTICAL));
 
         taskList.setAdapter(taskAdapter);
-        taskAdapter.setClickCallback(new ItemChooser<Task>() {
+        taskAdapter.setClickCallback(new CallableArg<Task>() {
             @Override
-            public void choose(Task item) {
+            public void call(Task item) {
                 onTaskClick(item);
             }
         });

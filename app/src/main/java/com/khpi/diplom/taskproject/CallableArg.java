@@ -4,8 +4,8 @@ package com.khpi.diplom.taskproject;
  * Created on 05/06/2017 22:24.
  */
 
-public interface ItemChooser<T> {
+public interface CallableArg<T> {
 
-    void choose(T item);
+    void call(T item);
 
 }

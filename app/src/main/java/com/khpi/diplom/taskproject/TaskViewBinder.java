@@ -27,7 +27,7 @@ public class TaskViewBinder {
         taskCreationDate = (TextView) root.findViewById(R.id.task_creation_date);
     }
 
-    public void bind(Task task){
+    public void bind(Task task) {
         taskName.setText(task.getName());
         taskDescription.setText(task.getDescription());
         long creationDateLong = task.getCreationDate();
@@ -35,5 +35,9 @@ public class TaskViewBinder {
 
         @ColorInt int color = ContextCompat.getColor(root.getContext(), Util.getPriorityColorForTask(task));
         priorityView.setBackgroundColor(color);
+
+        if (priorityView instanceof TextView) {
+            ((TextView) priorityView).setText(task.getPriority());
+        }
     }
 }

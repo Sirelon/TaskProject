@@ -6,5 +6,5 @@ package com.khpi.diplom.taskproject;
 
 public interface Constants {
     String REF_TASK = "task";
-    String REF_USER = "user";
+    String REF_USER = "users";
 }
