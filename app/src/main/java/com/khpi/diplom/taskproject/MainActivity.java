@@ -8,6 +8,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
@@ -39,6 +42,11 @@ public class MainActivity extends BaseActivity {
         }
 
         setContentView(R.layout.activity_main);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        toolbar.setTitle(R.string.app_name);
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeToRefresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -88,13 +96,15 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void showProgress() {
 //        super.showProgress();
-        swipeRefreshLayout.setRefreshing(true);
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(true);
     }
 
     @Override
     protected void hideProgress() {
 //        super.hideProgress();
-        swipeRefreshLayout.setRefreshing(false);
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(false);
     }
 
     private void onTaskClick(Task item) {
@@ -115,6 +125,15 @@ public class MainActivity extends BaseActivity {
                     Task task = snapshot.getValue(Task.class);
                     tasks.add(task);
                 }
+
+                // Sort by creation date
+                Collections.sort(tasks, new Comparator<Task>() {
+                    @Override
+                    public int compare(Task o1, Task o2) {
+                        return Long.compare(o2.getCreationDate(), o1.getCreationDate());
+                    }
+                });
+
                 taskAdapter.addData(tasks);
                 hideProgress();
             }

@@ -1,6 +1,5 @@
 package com.khpi.diplom.taskproject;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -94,6 +93,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        hideProgress();
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
                         // If sign in fails, display a message to the user. If sign in succeeds
@@ -103,7 +103,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             openMain();
                         } else {
                             Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(LoginActivity.this, "Incorrect login or password.",
+                            Toast.makeText(LoginActivity.this, task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
 
@@ -138,7 +138,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                         } else {
                             Log.w(TAG, "createUserWithEmailAndPassword:failed", task.getException());
 
-                            errorDuringSignUp();
+                            errorDuringSignUp(task.getException().getMessage());
                         }
                     }
                 });
@@ -152,20 +152,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        hideProgress();
                         if (task.isSuccessful()) {
                             openMain();
                         } else {
                             Log.w(TAG, "createUserWithEmailAndPassword:failed", task.getException());
 
-                            errorDuringSignUp();
+                            errorDuringSignUp(task.getException().getMessage());
                         }
                     }
                 });
     }
 
-    private void errorDuringSignUp() {
-        Toast.makeText(LoginActivity.this, "Incorrect login or password.",
-                Toast.LENGTH_SHORT).show();
+    private void errorDuringSignUp(String message) {
+        hideProgress();
+        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
     private void openMain() {

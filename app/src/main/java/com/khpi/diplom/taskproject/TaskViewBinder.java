@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,6 +25,10 @@ public class TaskViewBinder {
     @Nullable
     private final TextView taskClosedDate;
 
+    @Nullable
+    private final ViewGroup rootClosed;
+
+
     public TaskViewBinder(View root, TextInputLayout taskName, TextInputLayout taskDescription, @Nullable TextInputLayout taskCreationDate, View priorityView) {
         this.root = root;
         dateUtil = new DateUtil();
@@ -35,6 +40,7 @@ public class TaskViewBinder {
             this.taskCreationDate = null;
         }
         this.taskClosedDate = null;
+        this.rootClosed = null;
         this.priorityView = priorityView;
     }
 
@@ -46,6 +52,7 @@ public class TaskViewBinder {
         taskDescription = (TextView) root.findViewById(R.id.task_description);
         taskCreationDate = (TextView) root.findViewById(R.id.task_creation_date);
         taskClosedDate = (TextView) root.findViewById(R.id.task_closed_date);
+        rootClosed = (ViewGroup) root.findViewById(R.id.root_closed);
     }
 
     public void bind(Task task) {
@@ -56,6 +63,9 @@ public class TaskViewBinder {
             long creationDateLong = task.getCreationDate();
             taskCreationDate.setText(dateUtil.formatDate(creationDateLong));
         }
+
+
+        rootClosed.setVisibility(task.isClose() ? View.VISIBLE : View.GONE);
 
         if (taskClosedDate != null && task.isClose()) {
             long closedDateLong = task.getClosedDate();
